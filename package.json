@@ -1,0 +1,40 @@
+{
+  "name": "fiorsaoirse-tic-tac-toe",
+  "version": "0.0.1",
+  "description": "Console game tic-tac-toe",
+  "main": "dist/index.js",
+  "bin": {
+    "tic-tac-toe": "dist/bin/index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npm run build-ts",
+    "build-types": "tsc",
+    "build-ts": "babel src --out-dir dist --extensions \".ts\" --source-maps inline",
+    "prepublishOnly": "npm run build"
+  },
+  "author": "fiorsaoirse",
+  "license": "ISC",
+  "dependencies": {
+    "commander": "^6.2.0",
+    "commander-ts": "^0.1.5",
+    "inquirer": "^7.3.3",
+    "readline-sync": "^1.4.10"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.12.1",
+    "@babel/core": "^7.12.3",
+    "@babel/node": "^7.12.6",
+    "@babel/plugin-proposal-class-properties": "^7.12.1",
+    "@babel/plugin-proposal-object-rest-spread": "^7.12.1",
+    "@babel/plugin-transform-typescript": "^7.12.1",
+    "@babel/preset-env": "^7.12.1",
+    "@babel/preset-typescript": "^7.12.1",
+    "@types/commander": "^2.12.2",
+    "@types/inquirer": "^7.3.1",
+    "@types/node": "^14.14.6",
+    "tslint": "^6.1.0",
+    "tslint-config-airbnb": "^5.11.2",
+    "typescript": "~4.0.3"
+  }
+}
