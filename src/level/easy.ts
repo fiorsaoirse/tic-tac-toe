@@ -1,19 +1,18 @@
-import { gameValue } from 'engine/tic-tac-toe';
-import { IGameLevel } from './gameLevel';
+import { ColumnPoint, GameBoard, GamePoint, IGameLevel, RowPoint } from '../contracts';
 
-class EasyLevel implements IGameLevel {
-  public getPoint(matrix: gameValue[][]): number[] {
-    for (let row = 0; row < matrix.length; row += 1) {
-      for (let column = 0; column < matrix[row].length; column += 1) {
-        const cell = matrix[row][column];
-        if (cell === null) {
-          return ([ row, column ]);
+export class EasyLevel implements IGameLevel {
+
+  public getPoint(board: GameBoard): GamePoint {
+    const size = board.length;
+    for (let row = 0; row < size; row += 1) {
+      for (let column = 0; column < size; column += 1) {
+        const cellValue = board[row][column];
+        if (!cellValue) {
+          return ([row as RowPoint, column as ColumnPoint]);
         }
       }
     }
-    throw new Error('Can not find empty place');
+    throw new Error('Can not find empty cell!');
   }
 
 }
-
-export default EasyLevel;

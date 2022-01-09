@@ -1,38 +1,43 @@
 #!/usr/bin/env node
-import { Command } from 'commander';
+import * as inquirer from 'inquirer';
+import { BoardSize } from '../contracts';
+import startGame from '../index';
 
-console.log('Booo');
-
-const program = new Command();
-program
-  .version('0.1.0')
-  .option('-C, --chdir <path>', 'change the working directory')
-  .option('-c, --config <path>', 'set config path. defaults to ./deploy.conf')
-  .option('-T, --no-tests', 'ignore test hook');
- 
-program
-  .command('setup [env]')
-  .description('run setup commands for all envs')
-  .option("-s, --setup_mode [mode]", "Which setup mode to use")
-  .action(function(env, options){
-    const mode = options.setup_mode || "normal";
-    env = env || 'all';
-    console.log('setup for %s env(s) with %s mode', env, mode);
+inquirer
+  .prompt([
+    {
+      type: 'list',
+      name: 'boardSize',
+      message: 'Select board size:',
+      choices: [
+        {
+          name: 'Small (3x3)',
+          value: BoardSize.Small
+        },
+        {
+          name: 'Medium (6x6)',
+          value: BoardSize.Medium
+        },
+        {
+          name: 'Large (9x9)',
+          value: BoardSize.Large
+        }
+      ],
+      default: BoardSize.Small
+    },
+    {
+      type: 'list',
+      name: 'difficulty',
+      message: 'Select difficulty:',
+      choices: [
+        { name: 'Easy', value: 'easy' },
+        { name: 'Normal', value: 'normal' },
+        { name: 'Hard', value: 'hard' }
+      ],
+      default: 'easy'
+    }
+  ])
+  .then(answers => {
+    const { boardSize, difficulty } = answers;
+    return startGame(boardSize, difficulty);
   });
- 
-program
-  .command('exec <cmd>')
-  .alias('ex')
-  .description('execute the given remote cmd')
-  .option("-e, --exec_mode <mode>", "Which exec mode to use")
-  .action(function(cmd, options){
-    console.log('exec "%s" using %s mode', cmd, options.exec_mode);
-  }).on('--help', function() {
-    console.log('');
-    console.log('Examples:');
-    console.log('');
-    console.log('  $ deploy exec sequential');
-    console.log('  $ deploy exec async');
-  });
- 
-program.parse(process.argv);
