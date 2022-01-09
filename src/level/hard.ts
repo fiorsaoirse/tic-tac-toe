@@ -8,27 +8,28 @@ export class HardLevel implements IGameLevel {
         return Math.floor(Math.random() * (maxIndex - MIN_INDEX)) + MIN_INDEX;
     }
 
-    // TODO: подумать, как тут переделать логику с учетом
-    // отсутствия количества попыток, т.е. надо учитывать вообще
-    // в целом "можно ли сделать ход"
-
     public getPoint(board: GameBoard): GamePoint {
         const size = board.length;
-        let maxCountOfTries = size * size;
 
-        while (maxCountOfTries !== 0) {
-            const row = HardLevel.getRandomIndex(size);
-            const column = HardLevel.getRandomIndex(size);
-            const cellValue = board[row][column];
+        if (this.hasEmptyCells(board)) {
+            let row = HardLevel.getRandomIndex(size);
+            let column = HardLevel.getRandomIndex(size);
+            let cellValue = board[row][column];
 
-            if (!cellValue) {
-                return ([row as RowPoint, column as ColumnPoint]);
+            while (cellValue !== null) {
+                row = HardLevel.getRandomIndex(size);
+                column = HardLevel.getRandomIndex(size);
+                cellValue = board[row][column];
             }
 
-            maxCountOfTries -= 1;
+            return ([row as RowPoint, column as ColumnPoint]);
         }
-
+        // Otherwise throw error
         throw new Error('Can not find empty cell!');
     }
 
+    // TODO: можно ли убрать дублирование? Переделать GameBoard в класс?
+    private hasEmptyCells(board: GameBoard): boolean {
+        return board.some(row => row.some(cell => cell === null));
+    }
 }

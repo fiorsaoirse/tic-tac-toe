@@ -15,6 +15,5 @@ export class NormalLevel implements IGameLevel {
 
     throw new Error('Can not find empty cell!');
   }
-
 }
 

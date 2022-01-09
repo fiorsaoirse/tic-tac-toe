@@ -12,7 +12,7 @@ export class EasyLevel implements IGameLevel {
         }
       }
     }
+    // Otherwise throw error
     throw new Error('Can not find empty cell!');
   }
-
 }
