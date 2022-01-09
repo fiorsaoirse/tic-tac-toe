@@ -36,21 +36,24 @@ class TicTacToe implements IGame {
   }
 
   public go(rowIndex: number | null = null, columnIndex: number | null = null): void {
-    try {
-      if (this.isPlayerTurn) {
-        // TODO: map?
-        const playerPoint = ([rowIndex as RowPoint, columnIndex as ColumnPoint]) as GamePoint;
-        this.setPoint(playerPoint);
-      } else {
+    if (this.isPlayerTurn) {
+      // TODO: map?
+      const playerPoint = ([rowIndex as RowPoint, columnIndex as ColumnPoint]) as GamePoint;
+      this.setPoint(playerPoint);
+    } else {
+      try {
+        // TODO: как тут обработать ошибки? По идее, их в принципе
+        // не должно быть, т.к. проверка на пустые ячейки идет после каждого хода
         const point = this.strategy.getPoint(this.board);
         this.setPoint(point);
+      } catch (e) {
+        console.error(e);
+        this.state = 'finished';
       }
-
-      this.checkState();
-      this.checkTurn();
-    } catch (e) {
-      this.state = 'finished';
     }
+
+    this.checkState();
+    this.checkTurn();
   }
 
   private createEmptyBoard(): Array<Array<null>> {
@@ -94,6 +97,10 @@ class TicTacToe implements IGame {
     const maxValue = this.boardSize - 1;
     const sanitizedRowIndex = Math.min(rowIndex, maxValue);
     const sanitizedColumnIndex = Math.min(columnIndex, maxValue);
+
+    if (!!this.board[sanitizedRowIndex][sanitizedColumnIndex]) {
+      throw new Error(`The cell is already has a token for the pos: [${sanitizedRowIndex}, ${sanitizedColumnIndex}]`);
+    }
 
     this.board[sanitizedRowIndex][sanitizedColumnIndex] = this.getToken();
   }

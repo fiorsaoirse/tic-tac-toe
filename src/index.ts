@@ -18,10 +18,14 @@ export default async (boardSize: BoardSize = BoardSize.Small, difficulty: GameDi
     while (game.isActive) {
         if (game.isPlayerTurn) {
             console.log('Your turn...');
-            // TODO: type checking
-            const rowIndex = await question('Enter the row index: ');
-            const columnIndex = await question('Enter the column index: ');
-            game.go(+rowIndex, +columnIndex);
+            try {
+                // TODO: type checking
+                const rowIndex = await question('Enter the row index: ');
+                const columnIndex = await question('Enter the column index: ');
+                game.go(+rowIndex, +columnIndex);
+            } catch (e) {
+                console.log(`!!! ${e} !!!`);
+            }
         } else {
             console.log('Computer turn...');
             game.go();
