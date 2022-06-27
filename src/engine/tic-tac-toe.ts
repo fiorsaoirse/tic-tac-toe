@@ -37,19 +37,11 @@ class TicTacToe implements IGame {
 
   public go(rowIndex: number | null = null, columnIndex: number | null = null): void {
     if (this.isPlayerTurn) {
-      // TODO: map?
       const playerPoint = ([rowIndex as RowPoint, columnIndex as ColumnPoint]) as GamePoint;
       this.setPoint(playerPoint);
     } else {
-      try {
-        // TODO: как тут обработать ошибки? По идее, их в принципе
-        // не должно быть, т.к. проверка на пустые ячейки идет после каждого хода
-        const point = this.strategy.getPoint(this.board);
-        this.setPoint(point);
-      } catch (e) {
-        console.error(e);
-        this.state = 'finished';
-      }
+      const point = this.strategy.getPoint(this.board);
+      this.setPoint(point);
     }
 
     this.checkState();

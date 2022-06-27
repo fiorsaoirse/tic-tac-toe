@@ -28,7 +28,6 @@ export class HardLevel implements IGameLevel {
         throw new Error('Can not find empty cell!');
     }
 
-    // TODO: можно ли убрать дублирование? Переделать GameBoard в класс?
     private hasEmptyCells(board: GameBoard): boolean {
         return board.some(row => row.some(cell => cell === null));
     }
